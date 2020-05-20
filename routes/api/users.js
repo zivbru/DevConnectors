@@ -9,7 +9,7 @@ const config = require('config');
 
 // @route POST api/users
 // @desc Register user
-// @acess Public
+// @access Public
 
 router.post(
   '/',
@@ -23,7 +23,7 @@ router.post(
     ).isLength(6),
   ],
   async (req, res) => {
-    // check is=f there is errors from props validations
+    // check is there is errors from props validations
     const erorrs = validationResult(req);
     if (!erorrs.isEmpty()) {
       return res.status(400).json({ errors: erorrs.array() });
