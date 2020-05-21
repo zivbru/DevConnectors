@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
+const request = require('request');
 
+const config = require('config');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 
@@ -131,7 +133,7 @@ router.get('/', async (req, res) => {
 
 router.get('/user/:user_id', async (req, res) => {
   try {
-    const profile = null;
+    let profile = null;
     if (req.params.user_id.match(/^[0-9a-fA-F]{24}$/)) {
       // Yes, it's a valid ObjectId, proceed with `findById` call.
       profile = await Profile.findOne({
@@ -318,6 +320,37 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
 
     res.json(profile);
   } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route GET api/profile/github/:username
+// @desc Get user repos from github
+// @access Public
+
+router.get('/github/:username', (req, res) => {
+  try {
+    const options = {
+      uri: `https://api.github.com/users/${
+        req.params.username
+      }/repos/per_page=5&sort=created:asc&client_id=${config.get(
+        'githubClientId'
+      )}&client_secret=${config.get('githubClientSecret')}`,
+      method: 'GET',
+      headers: { 'user-agent': 'nodejs' },
+    };
+
+    request(options, (error, response, body) => {
+      if (error) console.error(err.message);
+
+      if (response.status !== 200) {
+        returnres.status(404).json({ msg: 'No github profile found' });
+      }
+
+      res.json(JSON.parse(body));
+    });
+  } catch (error) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
