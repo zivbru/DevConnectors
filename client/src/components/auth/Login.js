@@ -1,19 +1,25 @@
 import React, { Fragment, useState } from 'react';
+import { connect } from 'react-redux';
+import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import login from '../../reducers/auth';
 
-const Login = () => {
+const Login = (props) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  const { email, password } = formData;
+
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
+    e.preventDefault();
+    props.login({ email, password });
     console.error('success');
   };
 
-  const { email, password } = formData;
   return (
     <Fragment>
       <h1 className='large text-primary'>Sign In</h1>
@@ -50,4 +56,8 @@ const Login = () => {
   );
 };
 
-export default Login;
+Login.propTypes = {
+  login: propTypes.func.isRequired,
+};
+
+export default connect(null, { login })(Login);
