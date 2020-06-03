@@ -31,14 +31,14 @@ const profileSchema = new mongoose.Schema({
       from: { type: Date, required: true },
       to: { type: Date },
       current: { type: Boolean, default: true },
-      decription: { type: String },
+      description: { type: String },
     },
   ],
   social: {
     youtube: { type: String },
     twitter: { type: String },
     facebook: { type: String },
-    linkdin: { type: String },
+    linkedin: { type: String },
     instagram: { type: String },
   },
   date: {

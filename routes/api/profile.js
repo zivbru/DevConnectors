@@ -61,7 +61,7 @@ router.post(
       facebook,
       twitter,
       instagram,
-      linkdin,
+      linkedin,
     } = req.body;
 
     //Buid profile object
@@ -84,7 +84,7 @@ router.post(
     if (facebook) profileFields.social.facebook = facebook;
     if (twitter) profileFields.social.twitter = twitter;
     if (instagram) profileFields.social.instagram = instagram;
-    if (linkdin) profileFields.social.linkdin = linkdin;
+    if (linkedin) profileFields.social.linkedin = linkedin;
 
     try {
       let profile = await Profile.findOne({ user: req.user.id });
@@ -201,7 +201,7 @@ router.put(
       from,
       to,
       current,
-      decription,
+      description,
     } = req.body;
 
     const newExp = {
@@ -211,7 +211,7 @@ router.put(
       from,
       to,
       current,
-      decription,
+      description,
     };
 
     try {
@@ -278,7 +278,7 @@ router.put(
       from,
       to,
       current,
-      decription,
+      description,
     } = req.body;
 
     const newEdu = {
@@ -288,7 +288,7 @@ router.put(
       from,
       to,
       current,
-      decription,
+      description,
     };
 
     try {
