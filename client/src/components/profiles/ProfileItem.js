@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const ProfileItem = ({
   profile: {
-    user: { id, name, avatar },
+    user: { _id, name, avatar },
     status,
     company,
     location,
@@ -20,7 +20,7 @@ const ProfileItem = ({
           {status} {company && <span> at {company}</span>}
         </p>
         <p className='my-1'>{location && <span> at {location}</span>}</p>
-        <Link to={`/profile/${id}`} className='btn btn-primary'>
+        <Link to={`/profile/${_id}`} className='btn btn-primary'>
           View Profile
         </Link>
       </div>
