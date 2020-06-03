@@ -2,6 +2,8 @@ import api from '../utils/api';
 import { setAlert } from './alert';
 import {
   GET_PROFILE,
+  GET_ALL_PROFILES,
+  GET_REPOS,
   PROFILE_ERROR,
   UPDATE_PROFILE,
   ACCOUNT_DELETED,
@@ -16,6 +18,65 @@ export const getCurrentProfile = () => async (dispatch) => {
     dispatch({
       type: GET_PROFILE,
       payload: userProfile.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+// Get All Profiles
+export const getAllProfiles = () => async (dispatch) => {
+  dispatch({ type: CLEAR_PROFILE });
+
+  try {
+    const allProfile = await api.get('/profile');
+    dispatch({
+      type: GET_ALL_PROFILES,
+      payload: allProfile.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+// Get Profile by id
+export const getProfileById = (userId) => async (dispatch) => {
+  try {
+    const userProfile = await api.get(`profile/user/${userId}`);
+    dispatch({
+      type: GET_PROFILE,
+      payload: userProfile.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+// Get Github Repos
+export const getGithubRepos = (githubUserName) => async (dispatch) => {
+  try {
+    const githubRepos = await api.get(`profile/github/${githubUserName}`);
+    dispatch({
+      type: GET_REPOS,
+      payload: githubRepos.data,
     });
   } catch (error) {
     dispatch({
@@ -170,7 +231,7 @@ export const deleteEducation = (id) => async (dispatch) => {
 export const deleteAccount = () => async (dispatch) => {
   if (window.confirm('Are you sure? This can Not be undone ')) {
     try {
-      const userProfile = await api.delete(`/profile`);
+      await api.delete(`/profile`);
       dispatch({ type: CLEAR_PROFILE });
       dispatch({ type: ACCOUNT_DELETED });
       dispatch({ type: LOGOUT });

@@ -38,7 +38,7 @@ const EditProfile = (props) => {
         profileData.skills = profileData.skills.join(', ');
       setFormData(profileData);
     }
-  }, [loading, getCurrentProfile, profile]);
+  }, [loading, profile]);
 
   const {
     company,
