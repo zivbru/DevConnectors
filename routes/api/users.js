@@ -28,7 +28,6 @@ router.post(
     if (!erorrs.isEmpty()) {
       return res.status(400).json({ errors: erorrs.array() });
     }
-
     const { name, email, password } = req.body;
     try {
       // check if user exists

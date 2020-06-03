@@ -1,6 +1,13 @@
 import api from '../utils/api';
 import { setAlert } from './alert';
-import { GET_PROFILE, PROFILE_ERROR } from '../actions/types';
+import {
+  GET_PROFILE,
+  PROFILE_ERROR,
+  UPDATE_PROFILE,
+  ACCOUNT_DELETED,
+  CLEAR_PROFILE,
+  LOGOUT,
+} from '../actions/types';
 
 //Get Current user profile
 export const getCurrentProfile = () => async (dispatch) => {
@@ -33,7 +40,6 @@ export const createProfile = (formData, history, edit = false) => async (
     });
 
     dispatch(setAlert(edit ? 'Profile Updated' : 'Profile Created', 'success'));
-
     if (!edit) {
       history.push('/dashboard');
     }
@@ -51,5 +57,133 @@ export const createProfile = (formData, history, edit = false) => async (
         status: error.response.status,
       },
     });
+  }
+};
+
+//Add experience
+
+export const addExperience = (formData, history) => async (dispatch) => {
+  try {
+    const userProfile = await api.put('/profile/experience', formData);
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: userProfile.data,
+    });
+
+    dispatch(setAlert('Experience added', 'success'));
+
+    history.push('/dashboard');
+  } catch (error) {
+    const errors = error.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    }
+
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+//Add education
+
+export const addEducation = (formData, history) => async (dispatch) => {
+  try {
+    const userProfile = await api.put('/profile/education', formData);
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: userProfile.data,
+    });
+
+    dispatch(setAlert('Education added', 'success'));
+
+    history.push('/dashboard');
+  } catch (error) {
+    const errors = error.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    }
+
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+// Delete Experience
+
+export const deleteExperience = (id) => async (dispatch) => {
+  try {
+    const userProfile = await api.delete(`/profile/experience/${id}`);
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: userProfile.data,
+    });
+
+    dispatch(setAlert('Experience Removed', 'success'));
+  } catch (error) {
+    console.error(error);
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+// delete Education
+
+export const deleteEducation = (id) => async (dispatch) => {
+  try {
+    const userProfile = await api.delete(`/profile/education/${id}`);
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: userProfile.data,
+    });
+
+    dispatch(setAlert('Education Removed', 'success'));
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+// delete Account and profile
+
+export const deleteAccount = () => async (dispatch) => {
+  if (window.confirm('Are you sure? This can Not be undone ')) {
+    try {
+      const userProfile = await api.delete(`/profile`);
+      dispatch({ type: CLEAR_PROFILE });
+      dispatch({ type: ACCOUNT_DELETED });
+      dispatch({ type: LOGOUT });
+
+      dispatch(setAlert('Your account has been deleted!'));
+    } catch (error) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: {
+          msg: error.response.statusText,
+          status: error.response.status,
+        },
+      });
+    }
   }
 };
