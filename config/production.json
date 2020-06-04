@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://zivbru123:zivbru123@devconnector-byvez.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "bhJd39934ccSf85",
+  "githubClientId": "cf645a8e5033d7f849c5",
+  "githubClientSecret": "e7d2fea90ab53dbf3a32e986f241e44833d69207"
+}
