@@ -5,6 +5,7 @@ import {
   DELETE_POST,
   ADD_POST,
   GET_POST,
+  CLEAR_POST,
   ADD_COMMENT,
   REMOVE_COMMENT,
 } from '../actions/types';
@@ -31,6 +32,12 @@ export default function (state = initialState, action) {
         post: payload,
         loading: false,
       };
+    case CLEAR_POST:
+      return {
+        ...state,
+        post: null,
+        loading: false,
+      };
     case ADD_POST:
       return {
         ...state,
@@ -40,7 +47,7 @@ export default function (state = initialState, action) {
     case ADD_COMMENT:
       return {
         ...state,
-        post: { ...state.posts, comments: payload },
+        post: { ...state.post, comments: payload },
         loading: false,
       };
     case REMOVE_COMMENT:

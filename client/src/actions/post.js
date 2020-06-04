@@ -7,6 +7,7 @@ import {
   DELETE_POST,
   ADD_POST,
   GET_POST,
+  CLEAR_POST,
   ADD_COMMENT,
   REMOVE_COMMENT,
 } from '../actions/types';
@@ -37,6 +38,23 @@ export const getPost = (postId) => async (dispatch) => {
     dispatch({
       type: GET_POST,
       payload: post.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: POST_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+// Clear Post State
+export const clearPostState = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: CLEAR_POST,
     });
   } catch (error) {
     dispatch({
