@@ -54,7 +54,7 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// @route GEt api/posts/:id
+// @route GET api/posts/:id
 // @desc get post by id
 // @access Priavte
 
